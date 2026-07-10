@@ -14,18 +14,6 @@
         "$path": "UIRenderer.lua"
       }
     },
-    "StarterPlayer": {
-      "$className": "StarterPlayer",
-      "StarterPlayerScripts": {
-        "$className": "StarterPlayerScripts",
-        "AdminClient": {
-          "$path": "AdminClient.client.lua"
-        },
-        "ClientEffects": {
-          "$path": "ClientEffects.client.lua"
-        }
-      }
-    },
     "ServerScriptService": {
       "$className": "ServerScriptService",
       "AdminSystem": {

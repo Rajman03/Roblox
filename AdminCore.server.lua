@@ -21,7 +21,8 @@ local Config = require(ReplicatedStorage:WaitForChild("Config"))
 -- ─────────────────────────────────────────────────────
 -- REMOTY
 -- ─────────────────────────────────────────────────────
-local R = Instance.new("Folder")
+local R = ReplicatedStorage:FindFirstChild("AdminRemotes")
+or Instance.new("Folder")
 R.Name   = "AdminRemotes"
 R.Parent = ReplicatedStorage
 
@@ -132,7 +133,7 @@ local TAB_ORDER = { MainTab = 1, PlayerTab = 2, SettingsTab = 3 }
 -- ─────────────────────────────────────────────────────
 -- HANDLER AKCJI od klienta
 -- ─────────────────────────────────────────────────────
-local CLIENT_SIDE = { SetNoclip = true, SetInfiniteJump = true, SetVanish = true, SetClickTeleport = true }
+local CLIENT_SIDE = { SetNoclip = true, SetInfiniteJump = true, SetClickTeleport = true }
 local CLIENT_VAL  = { SetWalkSpeed = true, SetJumpPower = true }
 
 -- Per-player theme (domyślnie z Configa)
