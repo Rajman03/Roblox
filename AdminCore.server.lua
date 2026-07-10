@@ -185,10 +185,10 @@ AdminAction.OnServerEvent:Connect(function(player, action, data)
     local h = ActionHandlers[action]
     if h then h(player, data or {}) end
 
-    -- Przekaż efekty do klienta
-    if CLIENT_SIDE[action] then
+    -- Przekaż efekty do klienta tylko dla akcji, które tego wymagają.
+    if CLIENT_EFFECTS_BOOL[action] then
         ClientEffect:FireClient(player, action, data)
-    elseif CLIENT_VAL[action] then
+    elseif CLIENT_EFFECTS_NUM[action] then
         ClientEffect:FireClient(player, action, { enabled = true, value = data and data.value })
     end
 end)
