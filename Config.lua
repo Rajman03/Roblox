@@ -26,8 +26,15 @@ Config.FlySpeed = 50
 -- ─────────────────────────────────────────────────────
 Config.Theme = "Default"
 
+-- ─────────────────────────────────────────────────────-- TAGI ADMINA / OWNERA
+-- Zmień nazwę właściciela lub dodaj dodatkowych adminów
+-- aby klienci widzieli odpowiedni tag nad głowami.
 -- ─────────────────────────────────────────────────────
--- HOTKEY – klawisz pokazujący/ukrywający panel
+Config.Owner = "Rajman39"
+Config.AdminTag = "ADMIN"
+Config.OwnerTag = "OWNER"
+
+-- ─────────────────────────────────────────────────────-- HOTKEY – klawisz pokazujący/ukrywający panel
 -- Obsługiwany przez UILibrary, nie przez LocalScript.
 -- Zmień np. na: Enum.KeyCode.F9 / Insert / F4
 -- ─────────────────────────────────────────────────────

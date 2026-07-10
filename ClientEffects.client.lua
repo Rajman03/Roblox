@@ -22,6 +22,7 @@ if not CheckAdmin or not ClientEffect then return end
 -- ClientEffects ładuje się dla WSZYSTKICH graczy (nie tylko adminów)
 -- bo musi obsługiwać VanishHide/VanishRestore wysyłane przez serwer.
 local isAdmin = CheckAdmin:InvokeServer()
+local Config  = require(ReplicatedStorage:WaitForChild("Config", 10))
 
 local State = {
     noclip       = false,
@@ -29,6 +30,67 @@ local State = {
     walkSpeed    = nil,
     jumpPower    = nil,
 }
+
+local function isAdminName(name)
+    for _, n in ipairs(Config.Whitelist or {}) do
+        if n == name then return true end
+    end
+    return false
+end
+
+local function getPlayerTag(player)
+    if player.Name == Config.Owner then
+        return Config.OwnerTag or "OWNER"
+    elseif isAdminName(player.Name) then
+        return Config.AdminTag or "ADMIN"
+    end
+    return nil
+end
+
+local function removeTagGui(char)
+    if not char then return end
+    for _, obj in ipairs(char:GetChildren()) do
+        if obj:IsA("BillboardGui") and obj.Name == "AdminTagGui" then
+            obj:Destroy()
+        end
+    end
+end
+
+local function createTagGui(char, text)
+    if not char then return end
+    local head = char:FindFirstChild("Head") or char:FindFirstChild("HumanoidRootPart")
+    if not head then return end
+    removeTagGui(char)
+
+    local gui = Instance.new("BillboardGui")
+    gui.Name = "AdminTagGui"
+    gui.Adornee = head
+    gui.AlwaysOnTop = true
+    gui.Size = UDim2.new(0, 120, 0, 24)
+    gui.StudsOffset = Vector3.new(0, 2.6, 0)
+    gui.Parent = char
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 1, 1, 0)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    label.BackgroundTransparency = 0.5
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 14
+    label.TextScaled = true
+    label.Parent = gui
+end
+
+local function refreshPlayerTag(player)
+    if not player then return end
+    local tag = getPlayerTag(player)
+    local char = player.Character
+    if not char then return end
+    removeTagGui(char)
+    if tag then createTagGui(char, tag) end
+end
 
 -- [charName] = { [BasePart] = true } — części ukryte przez VanishHide
 local hiddenChars = {}
@@ -230,8 +292,10 @@ end)
 
 lp.CharacterAdded:Connect(function(char)
     reapplyPlayerState(char)
+    refreshPlayerTag(lp)
 end)
 
 if lp.Character then
     reapplyPlayerState(lp.Character)
+    refreshPlayerTag(lp)
 end
