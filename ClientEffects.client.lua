@@ -39,6 +39,25 @@ local function getHum()
     return c and c:FindFirstChildOfClass("Humanoid")
 end
 
+local function reapplyPlayerState(char)
+    if not char then return end
+    local hum = char:FindFirstChildOfClass("Humanoid")
+    if hum then
+        if State.walkSpeed ~= nil then
+            hum.WalkSpeed = State.walkSpeed
+        end
+        if State.jumpPower ~= nil then
+            hum.UseJumpPower = true
+            hum.JumpPower = State.jumpPower
+        end
+    end
+    if State.noclip then
+        for _, part in ipairs(collectParts(char)) do
+            part.CanCollide = false
+        end
+    end
+end
+
 -- Zbiera wszystkie BasePart postaci (bez HumanoidRootPart który nie ma siatki)
 local function collectParts(char)
     local parts = {}
@@ -209,7 +228,10 @@ RunService.Heartbeat:Connect(function()
     end
 end)
 
-lp.CharacterAdded:Connect(function()
-    State.noclip = false
-    -- Po respawnie admin zawsze widzi siebie (LTM=0 jest domyślne)
+lp.CharacterAdded:Connect(function(char)
+    reapplyPlayerState(char)
 end)
+
+if lp.Character then
+    reapplyPlayerState(lp.Character)
+end
