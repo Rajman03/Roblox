@@ -1,0 +1,75 @@
+{
+  "name": "AdminSystem",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Config": {
+        "$path": "Config.lua"
+      },
+      "UILibrary": {
+        "$path": "UILibrary"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "AdminSystem": {
+        "$className": "Folder",
+        "AdminCore": {
+          "$path": "AdminCore.server.lua"
+        },
+        "Modules": {
+          "$className": "Folder",
+          "Server": {
+            "$className": "Folder",
+            "Fly": {
+              "$path": "Modules/Server/Fly.lua"
+            },
+            "GodMode": {
+              "$path": "Modules/Server/GodMode.lua"
+            },
+            "Noclip": {
+              "$path": "Modules/Server/Noclip.lua"
+            },
+            "Movement": {
+              "$path": "Modules/Server/Movement.lua"
+            },
+            "InfiniteJump": {
+              "$path": "Modules/Server/InfiniteJump.lua"
+            },
+            "Teleport": {
+              "$path": "Modules/Server/Teleport.lua"
+            },
+            "Vanish": {
+              "$path": "Modules/Server/Vanish.lua"
+            },
+            "PlayerActions": {
+              "$path": "Modules/Server/PlayerActions.lua"
+            }
+          },
+          "Tabs": {
+            "$className": "Folder",
+            "MainTab": {
+              "$path": "Modules/Tabs/MainTab.lua"
+            },
+            "PlayerTab": {
+              "$path": "Modules/Tabs/PlayerTab.lua"
+            }
+          }
+        }
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "AdminClient": {
+          "$path": "AdminClient.client.lua"
+        },
+        "ClientEffects": {
+          "$path": "ClientEffects.client.lua"
+        }
+      }
+    }
+  }
+}

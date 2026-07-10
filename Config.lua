@@ -1,0 +1,36 @@
+-- =====================================================
+-- Config.lua  (ModuleScript → ReplicatedStorage)
+-- =====================================================
+
+local Config = {}
+
+-- WHITELIST
+Config.Whitelist = {
+    "Rajman39",         -- Creator
+    -- "NazwaGracza2",
+}
+
+-- WALKSPEED
+Config.MinWalkSpeed = 16
+Config.MaxWalkSpeed = 100
+
+-- JUMPPOWER
+Config.MinJumpPower = 50
+Config.MaxJumpPower = 300
+
+-- FLY
+Config.FlySpeed = 50
+
+-- ─────────────────────────────────────────────────────
+-- MOTYW – "Default" (ciemny + niebieski) lub "Purple" (fioletowy)
+-- ─────────────────────────────────────────────────────
+Config.Theme = "Default"
+
+-- ─────────────────────────────────────────────────────
+-- HOTKEY – klawisz pokazujący/ukrywający panel
+-- Obsługiwany przez UILibrary, nie przez LocalScript.
+-- Zmień np. na: Enum.KeyCode.F9 / Insert / F4
+-- ─────────────────────────────────────────────────────
+Config.HotkeyToggle = Enum.KeyCode.RightShift
+
+return Config
