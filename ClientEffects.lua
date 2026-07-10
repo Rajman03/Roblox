@@ -104,7 +104,7 @@ ClientEffect.OnClientEvent:Connect(function(action, data)
         end
 
     -- ── VANISH: ukryj admina dla innych graczy ────
-    -- Serwer wysyła VanishHide do wszystkich POZA adminem.
+    -- Serwer wysyła VanishHide do wszystkich pozostałych graczy.
     -- LTM=1 przy Transparency=0 → finalAlpha = clamp(0+1,0,1) = 1 = niewidoczny.
     elseif action == "VanishHide" then
         local charName = data.charName
@@ -127,28 +127,10 @@ ClientEffect.OnClientEvent:Connect(function(action, data)
             part.LocalTransparencyModifier = 1
         end
 
-        -- Ukryj BillboardGui (nazwa nad głową) + Decale (koszulki/spodnie)
+        -- Ukryj billboardy nad głową admina
         for _, obj in ipairs(adminChar:GetDescendants()) do
             if obj:IsA("BillboardGui") then
                 obj.Enabled = false
-            end
-        end
-        -- Ukryj HealthGui z CoreGui (pasek HP nad głową)
-        -- Szukamy PlayerGui administratora w StarterGui przez Players
-        for _, p in ipairs(Players:GetPlayers()) do
-            if p.Character and p.Character.Name == charName then
-                -- Ukryj SurfaceAppearance i tekstury na częściach
-                for _, desc in ipairs(adminChar:GetDescendants()) do
-                    if desc:IsA("Decal") or desc:IsA("SpecialMesh") then
-                        -- SpecialMesh nie musi być ukrywany, Decal tak
-                        if desc:IsA("Decal") then
-                            desc.Transparency = 1
-                            if not hiddenChars[charName] then hiddenChars[charName] = {} end
-                            hiddenChars[charName]["decal_"..tostring(desc)] = desc
-                        end
-                    end
-                end
-                break
             end
         end
 
