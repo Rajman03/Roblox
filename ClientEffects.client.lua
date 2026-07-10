@@ -73,11 +73,11 @@ ClientEffect.OnClientEvent:Connect(function(action, data)
 
     elseif action == "SetWalkSpeed" then
         if not isAdmin then return end
-        State.walkSpeed = data.enabled and data.value or nil
+        State.walkSpeed = data.value
 
     elseif action == "SetJumpPower" then
         if not isAdmin then return end
-        State.jumpPower = data.enabled and data.value or nil
+        State.jumpPower = data.value
 
     -- ── VANISH: admin widzi siebie, ale jego nametag jest ukryty ───
     -- VanishSelf wysyłany tylko do admina.
@@ -86,8 +86,8 @@ ClientEffect.OnClientEvent:Connect(function(action, data)
         -- Ukryj/przywróć własny PlayerName tag (widoczny dla innych przez CoreGui)
         local StarterGui = game:GetService("StarterGui")
         local ok, _ = pcall(function()
-            -- Ukryj nazwę gracza nad głową widoczną dla innych
-            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true) -- nie ruszaj listy
+            -- Keeping PlayerList visibility unchanged.
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
         end)
         local c = getChar()
         if not c then return end

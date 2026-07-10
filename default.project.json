@@ -9,6 +9,9 @@
       },
       "UILibrary": {
         "$path": "UILibrary"
+      },
+      "UIRenderer": {
+        "$path": "UIRenderer.lua"
       }
     },
     "ServerScriptService": {

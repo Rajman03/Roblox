@@ -39,7 +39,7 @@ function Vanish.init(deps)
     -- Wyślij LTM do wszystkich graczy POZA adminem
     local function fireOthers(admin, action, data)
         for _, p in ipairs(Players:GetPlayers()) do
-            if p ~= admin then
+            if p ~= admin and not deps.isAdmin(p) then
                 ClientEffect:FireClient(p, action, data)
             end
         end
@@ -88,6 +88,9 @@ function Vanish.init(deps)
     -- Nowy gracz dołącza — wyślij mu aktywne vanishe
     Players.PlayerAdded:Connect(function(newPlayer)
         task.wait(1)  -- poczekaj aż klient się załaduje
+        if deps.isAdmin(newPlayer) then
+            return
+        end
         for userId, active in pairs(vanishActive) do
             if active then
                 local admin = Players:GetPlayerByUserId(userId)
