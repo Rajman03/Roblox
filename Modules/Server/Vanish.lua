@@ -50,37 +50,17 @@ function Vanish.init(deps)
 
         local charName = player.Character and player.Character.Name or player.Name
 
-        -- Pomocnik: ukryj/pokaż nametag i nametag serwera
-        local function setNameTag(char, hide)
-            if not char then return end
-            local hum = char:FindFirstChildOfClass("Humanoid")
-            if hum then
-                -- DisplayDistanceType=None → nametag niewidoczny dla WSZYSTKICH
-                -- Serwer to replikuje; admin widzi siebie w lustrze kamery
-                hum.DisplayDistanceType = hide
-                    and Enum.HumanoidDisplayDistanceType.None
-                    or  Enum.HumanoidDisplayDistanceType.Subject
-                hum.HealthDisplayType = hide
-                    and Enum.HumanoidHealthDisplayType.AlwaysOff
-                    or  Enum.HumanoidHealthDisplayType.DisplayWhenDamaged
-            end
-        end
-
         if data.enabled then
-            setNameTag(player.Character, true)
-
             -- Admin widzi siebie: LTM=0
             ClientEffect:FireClient(player, "VanishSelf", { enabled = true })
 
-            -- Wszyscy inni: LTM=1 na tej postaci
+            -- Wszyscy inni bez uprawnień admina: LTM=1 na tej postaci
             fireOthers(player, "VanishHide", { charName = charName })
         else
-            setNameTag(player.Character, false)
-
             -- Admin: przywróć
             ClientEffect:FireClient(player, "VanishSelf", { enabled = false })
 
-            -- Wszyscy inni: LTM=0
+            -- Wszyscy inni bez uprawnień admina: LTM=0
             fireOthers(player, "VanishRestore", { charName = charName })
         end
     end)

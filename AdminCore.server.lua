@@ -58,6 +58,9 @@ local ClientEffect = createRemote("ClientEffect", "RemoteEvent")
 -- WHITELIST
 -- ─────────────────────────────────────────────────────
 local function isAdmin(player)
+    if player.Name == Config.Owner then
+        return true
+    end
     for _, n in ipairs(Config.Whitelist) do
         if n == player.Name then return true end
     end

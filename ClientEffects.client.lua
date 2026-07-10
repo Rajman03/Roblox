@@ -32,6 +32,9 @@ local State = {
 }
 
 local function isAdminName(name)
+    if name == Config.Owner then
+        return true
+    end
     for _, n in ipairs(Config.Whitelist or {}) do
         if n == name then return true end
     end
