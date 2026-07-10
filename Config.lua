@@ -27,8 +27,9 @@ Config.FlySpeed = 50
 Config.Theme = "Default"
 
 -- ─────────────────────────────────────────────────────-- TAGI ADMINA / OWNERA
--- Zmień nazwę właściciela lub dodaj dodatkowych adminów
--- aby klienci widzieli odpowiedni tag nad głowami.
+-- Zmień nazwę właściciela lub dodaj dodatkowych adminów.
+-- Tagi pojawiają się nad głowami oraz w czacie.
+-- Admin/Owner są traktowani jako użytkownicy z uprawnieniami admina.
 -- ─────────────────────────────────────────────────────
 Config.Owner = "Rajman39"
 Config.AdminTag = "ADMIN"

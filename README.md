@@ -44,6 +44,7 @@ Lekki system administracyjny dla Roblox Studio, w którym cały interfejs grafic
 
 - `ClientEffects.client.lua` (`StarterPlayerScripts`)
   - wykonuje efekty client-side, takie jak noclip, infinite jump, vanish, zmiana prędkości
+  - dodaje tagi `ADMIN` / `OWNER` w czacie i nad głowami, widoczne tylko dla innych adminów/ownerów
 
 ## Konfiguracja
 

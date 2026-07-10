@@ -42,6 +42,7 @@ local function isAdminName(name)
 end
 
 local function getPlayerTag(player)
+    if not player then return nil end
     if player.Name == Config.Owner then
         return Config.OwnerTag or "OWNER"
     elseif isAdminName(player.Name) then
@@ -88,11 +89,69 @@ end
 
 local function refreshPlayerTag(player)
     if not player then return end
-    local tag = getPlayerTag(player)
     local char = player.Character
     if not char then return end
+
     removeTagGui(char)
-    if tag then createTagGui(char, tag) end
+    if not isAdmin then
+        return
+    end
+
+    local tag = getPlayerTag(player)
+    if tag then
+        createTagGui(char, tag)
+    end
+end
+
+local function bindPlayerTagUpdates(player)
+    if not player then return end
+    player.CharacterAdded:Connect(function()
+        task.wait(0.1)
+        refreshPlayerTag(player)
+    end)
+    refreshPlayerTag(player)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do
+    bindPlayerTagUpdates(player)
+end
+Players.PlayerAdded:Connect(bindPlayerTagUpdates)
+Players.PlayerRemoving:Connect(function(player)
+    local char = player.Character
+    if char then removeTagGui(char) end
+end)
+
+local TextChatService = game:GetService("TextChatService")
+local function applyChatTag(message, tag)
+    if not message or type(message.Text) ~= "string" then return end
+    local prefix = "[" .. tag .. "] "
+    if message.Text:sub(1, #prefix) == prefix then
+        return
+    end
+    message.Text = prefix .. message.Text
+end
+
+if TextChatService and TextChatService.OnIncomingMessage then
+    TextChatService.OnIncomingMessage:Connect(function(message)
+        if not message then return end
+        local source = message.TextSource
+        local sourceName = source and source.Name
+        local sourceId   = source and source.UserId
+        local player = nil
+
+        if type(sourceId) == "number" and sourceId > 0 then
+            player = Players:GetPlayerByUserId(sourceId)
+        end
+        if not player and type(sourceName) == "string" then
+            player = Players:FindFirstChild(sourceName)
+        end
+
+        if not player then return end
+        local tag = getPlayerTag(player)
+        if tag then
+            applyChatTag(message, tag)
+        end
+    end)
 end
 
 -- [charName] = { [BasePart] = true } — części ukryte przez VanishHide
@@ -211,9 +270,9 @@ ClientEffect.OnClientEvent:Connect(function(action, data)
             part.LocalTransparencyModifier = 1
         end
 
-        -- Ukryj billboardy nad głową admina
+        -- Ukryj tylko nasz tag admina, nie wszystkie BillboardGui
         for _, obj in ipairs(adminChar:GetDescendants()) do
-            if obj:IsA("BillboardGui") then
+            if obj:IsA("BillboardGui") and obj.Name == "AdminTagGui" then
                 obj.Enabled = false
             end
         end
@@ -233,11 +292,11 @@ ClientEffect.OnClientEvent:Connect(function(action, data)
             hiddenChars[charName] = nil
         end
 
-        -- Przywróć BillboardGui
+        -- Przywróć nasz tag admina, jeśli istnieje
         local adminChar = workspace:FindFirstChild(charName)
         if adminChar then
             for _, obj in ipairs(adminChar:GetDescendants()) do
-                if obj:IsA("BillboardGui") then
+                if obj:IsA("BillboardGui") and obj.Name == "AdminTagGui" then
                     obj.Enabled = true
                 end
             end
