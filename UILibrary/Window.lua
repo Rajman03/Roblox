@@ -144,89 +144,17 @@ function W.create(cfg, getT)
     local panelKey = cfg.Hotkey or Enum.KeyCode.RightShift
     local visible  = true
 
-    local toggleBar = U.new("TextButton", {
-        Name = "ToggleBar",
-        AnchorPoint = Vector2.new(0.5, 0),
-        Position = UDim2.new(0.5, 0, 0, 10),
-        Size = UDim2.new(0, 190, 0, 44),
-        BackgroundColor3 = T.Surface,
-        AutoButtonColor = false,
-        Text = "",
-        ZIndex = 25,
-    }, gui)
-    U.corner(toggleBar, 18)
-    U.stroke(toggleBar, T.Border, 1)
-
-    U.new("Frame", {
-        Size = UDim2.new(0, 4, 0, 20),
-        Position = UDim2.new(0, 12, 0.5, 0),
-        AnchorPoint = Vector2.new(0, 0.5),
-        BackgroundColor3 = T.Accent,
-        BorderSizePixel = 0,
-        ZIndex = 26,
-    }, toggleBar)
-
-    U.new("TextLabel", {
-        Size = UDim2.new(0, 24, 0, 24),
-        Position = UDim2.new(0, 24, 0.5, 0),
-        AnchorPoint = Vector2.new(0, 0.5),
-        BackgroundTransparency = 1,
-        Text = "☰",
-        TextColor3 = T.Accent,
-        Font = Enum.Font.GothamBold,
-        TextSize = 16,
-        ZIndex = 26,
-    }, toggleBar)
-
-    local toggleTextLabel = U.new("TextLabel", {
-        Name = "ToggleText",
-        Size = UDim2.new(1, -60, 1, 0),
-        Position = UDim2.new(0, 54, 0, 0),
-        BackgroundTransparency = 1,
-        Text = "Open Admin UI",
-        TextColor3 = T.Text,
-        Font = Enum.Font.GothamSemibold,
-        TextSize = 13,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        ZIndex = 26,
-    }, toggleBar)
-
-    toggleBar.MouseEnter:Connect(function()
-        U.tw(toggleBar, { BackgroundColor3 = T.SurfaceAlt }, 0.1)
-    end)
-    toggleBar.MouseLeave:Connect(function()
-        U.tw(toggleBar, { BackgroundColor3 = T.Surface }, 0.1)
-    end)
-
     -- Ustawia widoczność WSZYSTKICH elementów GUI naraz:
     -- main (okno), borderFrame (obwódka), overlay (dla dropdownów)
-    local function updateToggleText()
-        if toggleTextLabel then
-            toggleTextLabel.Text = visible and "Close Admin UI" or "Open Admin UI"
-        end
-    end
-
     local function setVisible(v)
         visible = v
         main.Visible = v
         borderFrame.Visible = v
         overlay.Visible = v
-        toggleBar.Visible = true
-        updateToggleText()
     end
 
     closeBtn.MouseButton1Click:Connect(function()
         setVisible(false)
-    end)
-
-    toggleBar.Activated:Connect(function()
-        setVisible(not visible)
-    end)
-    toggleBar.MouseButton1Click:Connect(function()
-        setVisible(not visible)
-    end)
-    toggleBar.TouchTap:Connect(function()
-        setVisible(not visible)
     end)
 
     setVisible(true)
