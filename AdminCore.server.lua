@@ -22,36 +22,37 @@ local Config = require(ReplicatedStorage:WaitForChild("Config"))
 -- REMOTY
 -- ─────────────────────────────────────────────────────
 local R = ReplicatedStorage:FindFirstChild("AdminRemotes")
-or Instance.new("Folder")
-R.Name   = "AdminRemotes"
-R.Parent = ReplicatedStorage
+if not R then
+    R = Instance.new("Folder")
+    R.Name   = "AdminRemotes"
+    R.Parent = ReplicatedStorage
+end
+
+local function createRemote(name, className)
+    local obj = R:FindFirstChild(name)
+    if obj then return obj end
+    obj = Instance.new(className)
+    obj.Name = name
+    obj.Parent = R
+    return obj
+end
 
 -- Klient pyta serwer: czy jestem adminem?
-local CheckAdmin = Instance.new("RemoteFunction")
-CheckAdmin.Name   = "CheckAdmin"
-CheckAdmin.Parent = R
+local CheckAdmin = createRemote("CheckAdmin", "RemoteFunction")
 
 -- Serwer → klient: instrukcje budowania UI
 -- Protokół: { cmd="tab"|"section"|"toggle"|"slider"|
 --             "dropdown"|"button"|"keybind"|"done", ...params }
-local BuildUI = Instance.new("RemoteEvent")
-BuildUI.Name   = "BuildUI"
-BuildUI.Parent = R
+local BuildUI = createRemote("BuildUI", "RemoteEvent")
 
 -- Klient → serwer: akcja użytkownika (toggle, slider, klik)
-local AdminAction = Instance.new("RemoteEvent")
-AdminAction.Name   = "AdminAction"
-AdminAction.Parent = R
+local AdminAction = createRemote("AdminAction", "RemoteEvent")
 
 -- Serwer → klient: odśwież dropdown graczy
-local UpdatePlayerList = Instance.new("RemoteEvent")
-UpdatePlayerList.Name   = "UpdatePlayerList"
-UpdatePlayerList.Parent = R
+local UpdatePlayerList = createRemote("UpdatePlayerList", "RemoteEvent")
 
 -- Serwer → klient: efekty client-side (noclip, infJump itp.)
-local ClientEffect = Instance.new("RemoteEvent")
-ClientEffect.Name   = "ClientEffect"
-ClientEffect.Parent = R
+local ClientEffect = createRemote("ClientEffect", "RemoteEvent")
 
 -- ─────────────────────────────────────────────────────
 -- WHITELIST
@@ -133,8 +134,15 @@ local TAB_ORDER = { MainTab = 1, PlayerTab = 2, SettingsTab = 3 }
 -- ─────────────────────────────────────────────────────
 -- HANDLER AKCJI od klienta
 -- ─────────────────────────────────────────────────────
-local CLIENT_SIDE = { SetNoclip = true, SetInfiniteJump = true, SetClickTeleport = true }
-local CLIENT_VAL  = { SetWalkSpeed = true, SetJumpPower = true }
+-- Te akcje są client-side i muszą być przekazywane przez ClientEffect.
+local CLIENT_EFFECTS_BOOL = {
+    SetNoclip      = true,
+    SetInfiniteJump = true,
+}
+local CLIENT_EFFECTS_NUM = {
+    SetWalkSpeed = true,
+    SetJumpPower = true,
+}
 
 -- Per-player theme (domyślnie z Configa)
 local playerTheme = {}   -- [UserId] = "Default" | "Purple"
