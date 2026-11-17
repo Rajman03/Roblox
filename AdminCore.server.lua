@@ -1,4 +1,5 @@
 -- =====================================================
+-- Project creator: Rajman03
 -- AdminCore.server.lua  (Script → ServerScriptService/AdminSystem)
 --
 -- ARCHITEKTURA:
